@@ -1,0 +1,24 @@
+[tool.poetry]
+name = "scheduler-backend"
+version = "0.1.0"
+description = "backend service for TG_scheduler"
+authors = ["mssffct <herooftheday82@mail.ru>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Django = "^4.2.7"
+djoser = "^2.2.2"
+celery = "^5.3.6"
+django-celery-beat = "^2.5.0"
+django-cleanup = "^8.0.0"
+channels = "^4.0.0"
+redis = "^5.0.1"
+channels-redis = "^4.1.0"
+requests = "^2.31.0"
+python-dotenv = "^1.0.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
