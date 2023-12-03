@@ -12,11 +12,13 @@ DOCKER_CONTAINER_MODE = os.getenv('DOCKER_CONTAINER_MODE')  # Code runs in docke
 RUNSERVER_MODE = 'runserver' in sys.argv  # manage.py runserver
 DAPHNE_DEVELOP_MODE = 'daphne' in sys.argv  # Daphne
 
-SECRET_KEY = os.getenv('SECRET_KEY')
+SECRET_KEY = os.getenv('DJANGO_SECRET_KEY')
 
 DEBUG = True
 
 ALLOWED_HOSTS = ['*']
+CORS_ALLOW_ALL_ORIGINS = True
+SECURE_CROSS_ORIGIN_OPENER_POLICY = None
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -38,6 +40,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',

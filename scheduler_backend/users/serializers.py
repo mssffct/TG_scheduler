@@ -8,7 +8,7 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = User
-        fields = ('id', 'username', 'settings')
+        fields = ('id', 'username', 'tg_settings_presence')
 
     def get_tg_settings_presence(self, instance):
         # For frontend to display notification
