@@ -12,14 +12,6 @@ const { configure } = require('quasar/wrappers')
 
 module.exports = configure(function (/* ctx */) {
   return {
-    eslint: {
-      // fix: true,
-      // include: [],
-      // exclude: [],
-      // rawOptions: {},
-      warnings: true,
-      errors: true
-    },
 
     // https://v2.quasar.dev/quasar-cli-vite/prefetch-feature
     // preFetch: true,
@@ -57,8 +49,10 @@ module.exports = configure(function (/* ctx */) {
         browser: ['es2019', 'edge88', 'firefox78', 'chrome87', 'safari13.1'],
         node: 'node16'
       },
+      
+      env: require('dotenv').config().parsed,  // .env
 
-      vueRouterMode: 'hash' // available values: 'hash', 'history'
+      vueRouterMode: 'history'
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
@@ -91,21 +85,15 @@ module.exports = configure(function (/* ctx */) {
     // https://v2.quasar.dev/quasar-cli-vite/quasar-config-js#framework
     framework: {
       config: {},
-
-      // iconSet: 'material-icons', // Quasar icon set
-      // lang: 'en-US', // Quasar language pack
-
-      // For special cases outside of where the auto-import strategy can have an impact
-      // (like functional components as one of the examples),
-      // you can manually specify Quasar components/directives to be available everywhere:
-      //
-      // components: [],
-      // directives: [],
-
-      // Quasar plugins
-      plugins: []
-    },
-
+      lang: 'ru', // Quasar language pack
+      plugins: [
+          'LocalStorage',
+          'Notify',
+          'Dialog',
+          'LoadingBar',
+          'Meta'
+      ]
+  },
     // animations: 'all', // --- includes all animations
     // https://v2.quasar.dev/options/animations
     animations: [],

@@ -12,10 +12,8 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          TG Sheduler
         </q-toolbar-title>
-
-        <div>Quasar v{{ $q.version }}</div>
       </q-toolbar>
     </q-header>
 
@@ -23,20 +21,15 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
+      :width="65"
     >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-
-        <EssentialLink
-          v-for="link in essentialLinks"
-          :key="link.title"
-          v-bind="link"
-        />
-      </q-list>
+      <div class="column content-center justify-between q-pt-xl" style="height: 100%; width:100%;">
+        <div class="column content-center">
+          <q-btn size='sm' icon="add_circle" flat label="Create" stack no-caps @click="clickTab('/create')" />
+          <q-btn size='sm' icon="edit_note" flat label="Edit" stack no-caps @click="clickTab('/edit')" />
+        </div>
+        <q-btn size='sm' icon="logout" flat label="Logout" stack no-caps @click="logoutAction" />
+      </div>
     </q-drawer>
 
     <q-page-container>
@@ -47,56 +40,22 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import EssentialLink, { EssentialLinkProps } from 'components/EssentialLink.vue'
-
-const essentialLinks: EssentialLinkProps[] = [
-  {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
-  },
-  {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
-  },
-  {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
-  },
-  {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
-  }
-]
+import { logout } from 'src/utils/app';
+import { useRouter } from 'vue-router';
 
 const leftDrawerOpen = ref(false)
 
 function toggleLeftDrawer () {
   leftDrawerOpen.value = !leftDrawerOpen.value
+}
+
+const $router = useRouter()
+const logoutAction = async () => {
+    await logout()
+    $router.go(0)
+}
+
+const clickTab = (link: string) => {
+    $router.push({path: link})
 }
 </script>
