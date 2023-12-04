@@ -25,7 +25,10 @@ export const useUserStore = defineStore<string, State, {}, Actions>('user', {
     },
     getters: {
     },
-
+    persist: {
+        storage: localStorage,
+        paths: ['token']
+    },
     actions: {
         setToken(token: string) {
             this.token = token

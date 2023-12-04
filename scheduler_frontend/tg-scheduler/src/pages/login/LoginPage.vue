@@ -89,7 +89,7 @@ const login = ref(true)
 const register = ref(false)
 
 const redirect = () => {
-    $router.push({name: 'CreatePage'})
+    $router.push({path: '/'})
 }
 
 const errorAndReload = (error: string):void => {
@@ -118,6 +118,7 @@ const formResetAction = () => {
 // Login
 const loginSuccess = (response: {auth_token: string}) => {
     const token = response.auth_token
+    console.log(token)
     if (!token) {
         showErrorNotify('Ошибка при авторизации')
         return

@@ -8,7 +8,7 @@ import {
 
 import routes from './routes'
 
-import useNaigation from './navigation'
+import initNavigation from './navigation'
 
 /*
  * If not building with SSR mode, you can
@@ -33,6 +33,6 @@ export default route(function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
-  useNaigation(Router)
+  initNavigation(Router)
   return Router
 })

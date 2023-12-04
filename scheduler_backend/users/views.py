@@ -33,7 +33,9 @@ class UserViewSet(ModelViewSet):
     @action(methods=['post'], detail=False, permission_classes=(AllowAny,))
     def register(self, request: Request):
         data = request.data
-        pass1, pass2 = data.get('password'), data.pop('password2')
+        username, pass1, pass2 = data.get('username'), data.get('password'), data.pop('password2')
+        if User.objects.filter(username=username).exists():
+            return ErrorResponse(description='Please, choose another username')
         if not pass1 == pass2:
             return ErrorResponse(description='The entered passwords do not match')
         try:

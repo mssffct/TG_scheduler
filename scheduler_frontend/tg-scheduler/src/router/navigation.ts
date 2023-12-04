@@ -16,9 +16,8 @@ export default function initNavigation(router: Router) {
 
         const userStore = useUserStore()
         if (userStore.token) {
-            console.log(to)
             if (to.name === loginPageName) {  // Login page with token (redirect)
-                next({ path: '/' })
+                next({ name: '/' })
             }
             else {
                 try {
