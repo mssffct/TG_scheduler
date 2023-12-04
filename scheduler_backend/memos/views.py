@@ -1,17 +1,43 @@
-from rest_framework.views import APIView
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.request import Request
+from django.db import transaction
+from rest_framework.decorators import action
+from django.contrib.auth.models import User
 
 from .serializers import MemosSerializer
 from .models import Memo
+from backend.responses import *
 
 
-class MemosView(APIView):
+class MemosViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = MemosSerializer
 
-    def get_queryset(self, request: Request):
-        return Memo.objects.filter(creator=request.app_user).all()
+    def get_queryset(self):
+        return Memo.objects.filter(creator=self.request.app_user).all()
 
-    def create(self, request: Request):
-        pass
+    @action(methods=['post'], detail=False)
+    def create_memo(self, request: Request):
+        data = request.data
+        try:
+            with transaction.atomic():
+                memo = Memo(
+                    creator=request.app_user, **data
+                )
+                memo.save()
+                return SuccessResponse('Saved successfully')
+        except Exception as ex:
+            print(ex)
+            return ErrorResponse(description='Failed to save memo')
+
+    @action(methods=['delete'], detail=False)
+    def delete_memo(self, request: Request):
+        data = request.data
+        try:
+            with transaction.atomic():
+                Memo.objects.get(id=data['id']).delete()
+                return SuccessResponse('Deleted successfully')
+        except Exception as ex:
+            print(ex)
+            return ErrorResponse(description='Failed to save memo')

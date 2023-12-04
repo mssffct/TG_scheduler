@@ -40,10 +40,12 @@ class UserViewSet(ModelViewSet):
             return ErrorResponse(description='The entered passwords do not match')
         try:
             with transaction.atomic():
-                serialized = UserSerializer(data=data)
-                if serialized.is_valid():
+                serializer = UserSerializer(data=data)
+                if serializer.is_valid():
                     User.objects.create_user(**data)
                     return SuccessResponse()
+                else:
+                    return ErrorResponse(description=serializer.errors)
         except Exception as ex:
             return ErrorResponse(description='Failed to create user account')
 
