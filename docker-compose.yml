@@ -11,7 +11,7 @@ services:
     env_file: .env
     expose:
       - "8005"
-    command: daphne -b 0.0.0.0 -p 8005 scheduler_backend.asgi:application
+    command: daphne -b 0.0.0.0 -p 8005 backend.asgi:application
     depends_on:
       - scheduler-postgres
       - scheduler-redis
@@ -28,8 +28,7 @@ services:
     build:
       context: ./scheduler_frontend
     ports:
-      - "80:80"
-      - "443:443"
+      - "8001:8001"
     volumes:
       - static:/srv/static
       - media:/srv/media

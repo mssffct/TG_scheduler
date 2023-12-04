@@ -8,7 +8,8 @@ from celery.apps.worker import Worker
 from backend.funs import init_django
 init_django()
 
-from backend.celery import app as celery_app
+from backend import celery_app
+from celery.bin import worker
 
 
 class CeleryManager:
@@ -30,10 +31,11 @@ class CeleryManager:
         self.thread_quit = True
 
     def _beat_target(self):
-        cmd = f'beat {self.loglevel_str}'
+        cmd = ['beat', self.loglevel_str]
+        cmd_str = ' '.join(cmd)
 
         try:
-            celery_app.start(cmd)
+            celery_app.start(cmd_str)
         except Exception as ex:
             print(str(ex))
 
@@ -44,10 +46,13 @@ class CeleryManager:
         self.beat_thread.start()
 
     def _worker_target(self):
-        cmd = f'worker {self.loglevel_str}'
+        cmd = ['worker', self.loglevel_str]
+        cmd_str = ' '.join(cmd)
+
         try:
-            celery_app.worker_main(cmd)
-        except Exception:
+            celery_app.worker_main(cmd_str)
+        except Exception as ex:
+            print(ex)
             print('[Worker]: Process start failed')
 
     def start_worker(self):
