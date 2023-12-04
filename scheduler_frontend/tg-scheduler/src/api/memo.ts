@@ -23,3 +23,11 @@ export const DeleteRequest = async (data: object) => {
         data
     })
 }
+
+export const UpdateRequest = async (data: object) => {
+    return request({
+        url: '/memos/update_memo',
+        method: 'put',
+        data
+    })
+}
