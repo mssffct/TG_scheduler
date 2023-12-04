@@ -32,7 +32,7 @@ class UserViewSet(ModelViewSet):
 
     @action(methods=['post'], detail=False, permission_classes=(AllowAny,))
     def register(self, request: Request):
-        data = request.data
+        data = request.data.dict()
         username, pass1, pass2 = data.get('username'), data.get('password'), data.pop('password2')
         if User.objects.filter(username=username).exists():
             return ErrorResponse(description='Please, choose another username')
@@ -63,5 +63,9 @@ class TokenCreate(ObtainAuthToken):
 
 class TokenDestroy(ObtainAuthToken):
     def post(self, request, *args, **kwargs):
-        Token.objects.get(user=request.user).delete()
+        Token.objects.get(user=request.app_user).delete()
         return SuccessResponse()
+
+
+class UserSettingsViewSet(ModelViewSet):
+    permission_classes = (IsAuthenticated,)
