@@ -1,42 +1,42 @@
 version: "3.9"
 
 services:
-#  scheduler-backend:
-#    restart: always
-#    container_name: scheduler-backend
-#    build:
-#      context: ./scheduler_backend
-#    environment:
-#      DOCKER_CONTAINER_MODE: 1
-#    env_file: .env
-#    expose:
-#      - "8005"
-#    command: daphne -b 0.0.0.0 -p 8005 scheduler_backend.asgi:application
-#    depends_on:
-#      - scheduler-postgres
-#      - scheduler-redis
-#    volumes:
-#      - media:/app/media
-#      - static:/app/static
-#      - ./scheduler_backend:/app
-#    networks:
-#      - main
-#
-#  scheduler-frontend:
-#    restart: always
-#    container_name: scheduler-frontend
-#    build:
-#      context: ./scheduler_frontend
-#    ports:
-#      - "80:80"
-#      - "443:443"
-#    volumes:
-#      - static:/srv/static
-#      - media:/srv/media
-#    depends_on:
-#      - scheduler-backend
-#    networks:
-#      - main
+  scheduler-backend:
+    restart: always
+    container_name: scheduler-backend
+    build:
+      context: ./scheduler_backend
+    environment:
+      DOCKER_CONTAINER_MODE: 1
+    env_file: .env
+    expose:
+      - "8005"
+    command: daphne -b 0.0.0.0 -p 8005 scheduler_backend.asgi:application
+    depends_on:
+      - scheduler-postgres
+      - scheduler-redis
+    volumes:
+      - media:/app/media
+      - static:/app/static
+      - ./scheduler_backend:/app
+    networks:
+      - main
+
+  scheduler-frontend:
+    restart: always
+    container_name: scheduler-frontend
+    build:
+      context: ./scheduler_frontend
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - static:/srv/static
+      - media:/srv/media
+    depends_on:
+      - scheduler-backend
+    networks:
+      - main
 
   scheduler-postgres:
     image: postgres:13.4
@@ -45,10 +45,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-#    expose:
-#      - ${POSTGRES_PORT}
-    ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    expose:
+      - ${POSTGRES_PORT}
     restart: always
     volumes:
       - ./data/postgres/:/var/lib/postgresql/data
@@ -80,8 +78,8 @@ services:
     command: [ "python3", "celery_run.py" ]
     volumes:
       - ./scheduler_backend:/app
-#    depends_on:
-#      - scheduler-backend
+    depends_on:
+      - scheduler-backend
     networks:
       - main
 
@@ -101,7 +99,6 @@ services:
       context: ./telegram_service/receiver
     tty: true
     stdin_open: true
-
 
 volumes:
   media:
