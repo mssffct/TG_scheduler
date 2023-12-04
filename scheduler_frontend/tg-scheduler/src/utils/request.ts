@@ -62,7 +62,6 @@ service.interceptors.request.use(
         if (userStore.token) { config.headers!['Authorization'] = 'Token ' + userStore.token }
 
 
-
         return config
     },
     error => {

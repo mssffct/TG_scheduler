@@ -14,6 +14,7 @@
         <q-toolbar-title>
           TG Sheduler
         </q-toolbar-title>
+        {{ userName }}
       </q-toolbar>
     </q-header>
 
@@ -25,7 +26,7 @@
     >
       <div class="column content-center justify-between q-pt-xl" style="height: 100%; width:100%;">
         <div class="column content-center">
-          <q-btn size='sm' icon="add_circle" flat label="Create" stack no-caps @click="clickTab('/create')" />
+          <q-btn size='sm' icon="add_circle" flat label="Create" stack no-caps @click="clickTab('/')" />
           <q-btn size='sm' icon="edit_note" flat label="Edit" stack no-caps @click="clickTab('/edit')" />
         </div>
         <q-btn size='sm' icon="logout" flat label="Logout" stack no-caps @click="logoutAction" />
@@ -42,7 +43,10 @@
 import { ref } from 'vue'
 import { logout } from 'src/utils/app';
 import { useRouter } from 'vue-router';
+import { useUserStore } from 'src/stores/users';
 
+const userStore = useUserStore()
+const userName = userStore.$state.userData?.username
 const leftDrawerOpen = ref(false)
 
 function toggleLeftDrawer () {

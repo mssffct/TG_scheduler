@@ -45,7 +45,7 @@
                     <q-input class="input" outlined
                         label="Password again" v-model="registerForm.password2" input-class="auth-input" :type="inputPasswordType">
                         <template v-slot:prepend>
-                            <q-icon name="password2"></q-icon>
+                            <q-icon name="password"></q-icon>
                         </template>
                         <template v-slot:append>
                             <q-btn @click="visibilityPassword = !visibilityPassword" round dense flat
@@ -118,9 +118,8 @@ const formResetAction = () => {
 // Login
 const loginSuccess = (response: {auth_token: string}) => {
     const token = response.auth_token
-    console.log(token)
     if (!token) {
-        showErrorNotify('Ошибка при авторизации')
+        showErrorNotify('Authorization error')
         return
     }
     userStore.setToken(token)
