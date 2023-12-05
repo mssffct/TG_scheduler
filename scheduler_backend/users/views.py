@@ -8,6 +8,7 @@ from rest_framework.request import Request
 from django.contrib.auth.models import User
 
 from .serializers import UserSerializer
+from .models import *
 from backend.responses import *
 
 
@@ -16,7 +17,7 @@ class UserViewSet(ModelViewSet):
     serializer_class = UserSerializer
 
     @action(methods=['get'], detail=False, permission_classes=(IsAuthenticated,))
-    def info(self, request: Request):
+    def info(self, request: Request) -> ErrorResponse | SuccessResponse:
         user = request.user
         if not user.is_active:
             return ErrorResponse(status=403)
@@ -24,14 +25,14 @@ class UserViewSet(ModelViewSet):
         return SuccessResponse(data)
 
     @action(methods=['post'], detail=False)
-    def check_password(self, request: Request, *args, **kwargs):
+    def check_password(self, request: Request, *args, **kwargs) -> ErrorResponse | SuccessResponse:
         user: User = request.user
         pwd = request.data['pwd']
 
         return SuccessResponse(user.check_password(pwd))
 
     @action(methods=['post'], detail=False, permission_classes=(AllowAny,))
-    def register(self, request: Request):
+    def register(self, request: Request) -> ErrorResponse | SuccessResponse:
         data = request.data.dict()
         username, pass1, pass2 = data.get('username'), data.get('password'), data.pop('password2')
         if User.objects.filter(username=username).exists():
@@ -51,7 +52,7 @@ class UserViewSet(ModelViewSet):
 
 
 class TokenCreate(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> ErrorResponse | SuccessResponse:
         serializer = self.serializer_class(data=request.data, context={'request': request})
         serializer.is_valid()
         if serializer.errors:
@@ -62,10 +63,32 @@ class TokenCreate(ObtainAuthToken):
 
 
 class TokenDestroy(ObtainAuthToken):
-    def post(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs) -> ErrorResponse | SuccessResponse:
         Token.objects.get(user=request.app_user).delete()
         return SuccessResponse()
 
 
 class UserSettingsViewSet(ModelViewSet):
     permission_classes = (IsAuthenticated,)
+
+    @action(methods=['get'], detail=False)
+    def telegram_id(self, request: Request) -> SuccessResponse:
+        settings = UserSettings.objects.get(user=request.app_user)
+        return SuccessResponse({'telegram_id': settings.telegram_id or None})
+
+    @action(methods=['post'], detail=False)
+    def save_settings(self, request: Request, *args, **kwargs) -> ErrorResponse | SuccessResponse:
+        data = request.data
+        username, telegram_id = data.get('username'), data.get('telegram_id')
+        if request.app_user.username == username:
+            pass
+        elif User.objects.filter(username=username).exists():
+            return ErrorResponse(description='Please, choose another username')
+        else:
+            User.objects.filter(username=request.app_user).update(username=username)
+        if telegram_id:
+            try:
+                UserSettings.objects.filter(user=request.app_user).update(telegram_id=telegram_id)
+            except ValueError:
+                return ErrorResponse(description='Please enter the correct telegram id number')
+        return SuccessResponse('Saved successfully')

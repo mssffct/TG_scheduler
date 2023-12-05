@@ -40,4 +40,4 @@ class MemosViewSet(ModelViewSet):
                 return SuccessResponse('Deleted successfully')
         except Exception as ex:
             print(ex)
-            return ErrorResponse(description='Failed to save memo')
+            return ErrorResponse(description='Failed to delete memo')

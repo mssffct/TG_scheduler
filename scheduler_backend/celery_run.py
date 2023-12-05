@@ -2,6 +2,7 @@ import time
 from threading import Thread
 from typing import Callable
 
+from celery.app.control import Inspect
 from celery.apps.beat import Beat
 from celery.apps.worker import Worker
 
@@ -24,7 +25,7 @@ class CeleryManager:
     loglevel_str = '--loglevel=INFO'
 
     def __init__(self):
-        import memos.tasks.send_task
+        from memos.tasks import send_task
 
     def target_decorator(self, target: Callable):
         target()
@@ -74,4 +75,8 @@ class CeleryManager:
 
 if __name__ == '__main__':
     celery_manager = CeleryManager()
-    celery_manager.run()
+
+    try:
+        celery_manager.run()
+    except Exception as ex:
+        print(f'Celery failed to start: {ex}')

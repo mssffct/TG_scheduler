@@ -45,3 +45,17 @@ export const logoutRequest = async () => {
     })
 }
 
+export const getTelegramId = async () => {
+    return request({
+        url: '/auth/settings/telegram_id',
+        method: 'get',
+    })
+}
+
+export const saveSettingsRequest = (data: object) => {
+    return request({
+        url: '/auth/settings/save_settings',
+        method: 'post',
+        data,
+    })
+}
