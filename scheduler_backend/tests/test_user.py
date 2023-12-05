@@ -1,19 +1,15 @@
 from django.test import TestCase, Client
-from django.test.client import RequestFactory
 from django.contrib.auth.models import User
 from rest_framework.authtoken.models import Token
 
 from users.models import UserSettings
 from tests.factories import UserFactory
-from users.middleware import TokenAuthMiddleware
 
 
 class UserSettingsTestCase(TestCase):
 
     def setUp(self):
         self.client = Client()
-        self.request = RequestFactory()
-        self.middleware =TokenAuthMiddleware
         self.user1 = UserFactory()
         self.user2 = UserFactory(username='user2')
         self.correct_user = 'correct_user'
@@ -63,10 +59,3 @@ class UserSettingsTestCase(TestCase):
         # check if Token created
         user = User.objects.get(username=self.correct_user)
         self.assertTrue(Token.objects.filter(user=user).exists())
-
-    def test_middleware(self):
-        """Test that user instance adds to request body"""
-        #test anonymous user for requests without Auth header
-        req = self.request.get('/')
-        self.middleware.get_user_by_headers(req, header=)
-        print(req.app_user)

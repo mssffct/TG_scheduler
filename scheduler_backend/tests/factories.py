@@ -17,7 +17,7 @@ class UserFactory(DjangoModelFactory):
 
 
 class SentMemoFactory(DjangoModelFactory):
-    creator = 'user1'
+    creator = UserFactory()
     theme = Faker('text')
     description = Faker('text')
     time_to_send = timezone.now()
@@ -29,7 +29,7 @@ class SentMemoFactory(DjangoModelFactory):
 
 
 class NotSentMemoFactory(DjangoModelFactory):
-    creator = 'user2'
+    creator = UserFactory()
     theme = Faker('text')
     description = Faker('text')
     time_to_send = timezone.now()
