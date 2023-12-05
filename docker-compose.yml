@@ -1,26 +1,26 @@
 version: "3.9"
 
 services:
-#  scheduler-backend:
-#    restart: always
-#    container_name: scheduler-backend
-#    build:
-#      context: ./scheduler_backend
-#    environment:
-#      DOCKER_CONTAINER_MODE: 1
-#    env_file: .env
-#    expose:
-#      - "8005"
-#    command: daphne -b 0.0.0.0 -p 8005 backend.asgi:application
-#    depends_on:
-#      - scheduler-postgres
-#      - scheduler-redis
-#    volumes:
-#      - media:/app/media
-#      - static:/app/static
-#      - ./scheduler_backend:/app
-#    networks:
-#      - main
+  scheduler-backend:
+    restart: always
+    container_name: scheduler-backend
+    build:
+      context: ./scheduler_backend
+    environment:
+      DOCKER_CONTAINER_MODE: 1
+    env_file: .env
+    expose:
+      - "8005"
+    command: daphne -b 0.0.0.0 -p 8005 backend.asgi:application
+    depends_on:
+      - scheduler-postgres
+      - scheduler-redis
+    volumes:
+      - media:/app/media
+      - static:/app/static
+      - ./scheduler_backend:/app
+    networks:
+      - main
 #
 #  scheduler-frontend:
 #    restart: always
@@ -44,10 +44,8 @@ services:
       - POSTGRES_USER=${POSTGRES_USER}
       - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
       - POSTGRES_DB=${POSTGRES_DB}
-#    expose:
-#      - ${POSTGRES_PORT}
-    ports:
-      - ${POSTGRES_PORT}:${POSTGRES_PORT}
+    expose:
+      - ${POSTGRES_PORT}
     restart: always
     volumes:
       - ./data/postgres/:/var/lib/postgresql/data
@@ -60,46 +58,46 @@ services:
     networks:
       - main
 
-#  scheduler-redis:
-#    image: redis
-#    container_name: scheduler-redis
-#    expose:
-#      - "6379"
-#    restart: always
-#    networks:
-#      - main
-#
-#  scheduler-celery:
-#    container_name: scheduler-celery
-#    build:
-#      context: ./scheduler_backend
-#    environment:
-#      DOCKER_CONTAINER_MODE: 1
-#    env_file: .env
-#    command: [ "python3", "celery_run.py" ]
-#    volumes:
-#      - ./scheduler_backend:/app
-#    depends_on:
-#      - scheduler-backend
-#    networks:
-#      - main
-#
-#  telegram_service_sender:
-#    container_name: tg-bot-sender
-#    command: sh -c "uvicorn app.main:app --reload --host 0.0.0.0"
-#    build:
-#      context: ./telegram_service/sender
-#    ports:
-#      - "8010:8000"
-#    tty: true
-#
-#  telegram_service_receiver:
-#    container_name: tg-bot-receiver
-#    command: sh -c "python3 main.py"
-#    build:
-#      context: ./telegram_service/receiver
-#    tty: true
-#    stdin_open: true
+  scheduler-redis:
+    image: redis
+    container_name: scheduler-redis
+    expose:
+      - "6379"
+    restart: always
+    networks:
+      - main
+
+  scheduler-celery:
+    container_name: scheduler-celery
+    build:
+      context: ./scheduler_backend
+    environment:
+      DOCKER_CONTAINER_MODE: 1
+    env_file: .env
+    command: [ "python3", "celery_run.py" ]
+    volumes:
+      - ./scheduler_backend:/app
+    depends_on:
+      - scheduler-backend
+    networks:
+      - main
+
+  telegram_service_sender:
+    container_name: tg-bot-sender
+    command: sh -c "uvicorn app.main:app --reload --host 0.0.0.0"
+    build:
+      context: ./telegram_service/sender
+    ports:
+      - "8010:8000"
+    tty: true
+
+  telegram_service_receiver:
+    container_name: tg-bot-receiver
+    command: sh -c "python3 main.py"
+    build:
+      context: ./telegram_service/receiver
+    tty: true
+    stdin_open: true
 
 volumes:
   media:

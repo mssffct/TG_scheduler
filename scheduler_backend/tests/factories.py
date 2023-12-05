@@ -1,7 +1,6 @@
 import random
 
 from django.utils import timezone
-from django.contrib.auth.models import User
 from factory import Faker
 from factory.django import DjangoModelFactory
 
@@ -17,7 +16,6 @@ class UserFactory(DjangoModelFactory):
 
 
 class SentMemoFactory(DjangoModelFactory):
-    creator = UserFactory()
     theme = Faker('text')
     description = Faker('text')
     time_to_send = timezone.now()
@@ -29,7 +27,6 @@ class SentMemoFactory(DjangoModelFactory):
 
 
 class NotSentMemoFactory(DjangoModelFactory):
-    creator = UserFactory()
     theme = Faker('text')
     description = Faker('text')
     time_to_send = timezone.now()
