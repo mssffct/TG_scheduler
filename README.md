@@ -26,6 +26,8 @@ npm run dev
 - After frontend application start up you will be able to use it in your browser on 'http://localhost:9000/'
 - Register your account in register form
 ![image](https://github.com/mssffct/TG_scheduler/assets/49521506/f168dd0f-77bc-46a1-824e-6f3f39ab87c1)
+- Send '/start' command to your bot, copy ID you received as an answer and save it in User settings form
+![image](https://github.com/mssffct/TG_scheduler/assets/49521506/66bb04e6-aa91-4696-a442-6713bd0bcc66)
 - Navigation: Use buttons on the leftside panel in order to move to Create Memo page, Edit memos page, User settings page or to logout
 ![image](https://github.com/mssffct/TG_scheduler/assets/49521506/2fbdb78a-baa1-4254-8803-42ff256799e5)
 - Create your memo using Create Memo form
