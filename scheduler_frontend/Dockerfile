@@ -2,8 +2,7 @@ FROM node:16
 
 WORKDIR /app/
 
-RUN apt-get update  \
-    && apt-get install nginx -y
+RUN apt-get update
 
 COPY ./tg-scheduler/package*.json /app/
 

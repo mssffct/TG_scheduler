@@ -2,13 +2,15 @@ import time
 from threading import Thread
 from typing import Callable
 
+from celery.app.control import Inspect
 from celery.apps.beat import Beat
 from celery.apps.worker import Worker
 
 from backend.funs import init_django
 init_django()
 
-from backend.celery import app as celery_app
+from backend import celery_app
+from celery.bin import worker
 
 
 class CeleryManager:
@@ -23,17 +25,18 @@ class CeleryManager:
     loglevel_str = '--loglevel=INFO'
 
     def __init__(self):
-        import memos.tasks.send_task
+        from memos.tasks import send_task
 
     def target_decorator(self, target: Callable):
         target()
         self.thread_quit = True
 
     def _beat_target(self):
-        cmd = f'beat {self.loglevel_str}'
+        cmd = ['beat', self.loglevel_str]
+        cmd_str = ' '.join(cmd)
 
         try:
-            celery_app.start(cmd)
+            celery_app.start(cmd_str)
         except Exception as ex:
             print(str(ex))
 
@@ -44,10 +47,13 @@ class CeleryManager:
         self.beat_thread.start()
 
     def _worker_target(self):
-        cmd = f'worker {self.loglevel_str}'
+        cmd = ['worker', self.loglevel_str]
+        cmd_str = ' '.join(cmd)
+
         try:
-            celery_app.worker_main(cmd)
-        except Exception:
+            celery_app.worker_main(cmd_str)
+        except Exception as ex:
+            print(ex)
             print('[Worker]: Process start failed')
 
     def start_worker(self):
@@ -69,4 +75,8 @@ class CeleryManager:
 
 if __name__ == '__main__':
     celery_manager = CeleryManager()
-    celery_manager.run()
+
+    try:
+        celery_manager.run()
+    except Exception as ex:
+        print(f'Celery failed to start: {ex}')

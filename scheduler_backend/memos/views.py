@@ -39,7 +39,8 @@ class MemosViewSet(ModelViewSet):
                 Memo.objects.get(id=data['id']).delete()
                 return SuccessResponse('Deleted successfully')
         except Exception as ex:
-            return ErrorResponse(description='Failed to save memo')
+            print(ex)
+            return ErrorResponse(description='Failed to delete memo')
 
     @action(methods=['put'], detail=False)
     def update_memo(self, request: Request) -> SuccessResponse | ErrorResponse:
@@ -48,7 +49,7 @@ class MemosViewSet(ModelViewSet):
         print(data)
         try:
             with transaction.atomic():
-                memo = Memo.objects.filter(id=memo_id).update(**data)
+                Memo.objects.filter(id=memo_id).update(**data)
                 return SuccessResponse('Updates successfully')
         except Exception as ex:
             print(ex)
