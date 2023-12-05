@@ -6,7 +6,7 @@
 - Create and edit reminders, edit their importance level and inner text
 - Reminders will be automatically send at the specified time by Telegram bot
 
-### Instalation
+### Installation
 > You need to install node, git, Docker and docker-compose locally. Also you need to create your Telegram application (https://core.telegram.org/api/obtaining_api_id) and to register your Telegram bot (https://core.telegram.org/bots/tutorial)
 
 - Clone repository to the folder you want
@@ -33,5 +33,9 @@ npm run dev
 - Edit memo's data or delete them using Edit Memo page functionality
 ![image](https://github.com/mssffct/TG_scheduler/assets/49521506/225af975-efbb-43d1-8000-f014e3be1bc3)
 
+## TODOS:
+- fix frontend docker conteiner issues
+- add tests to telegram_service microservices
+- add tests to memos application in scheduler_backend DRF application
 
 
