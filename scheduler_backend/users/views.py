@@ -5,7 +5,6 @@ from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
-from django.contrib.auth.models import User
 
 from .serializers import UserSerializer
 from .models import *
@@ -46,6 +45,7 @@ class UserViewSet(ModelViewSet):
                     User.objects.create_user(**data)
                     return SuccessResponse()
                 else:
+                    print(serializer.errors)
                     return ErrorResponse(description=serializer.errors)
         except Exception as ex:
             return ErrorResponse(description='Failed to create user account')
