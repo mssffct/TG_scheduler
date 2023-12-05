@@ -28,6 +28,7 @@
         <div class="column content-center">
           <q-btn size='sm' icon="add_circle" flat label="Create" stack no-caps @click="clickTab('/')" />
           <q-btn size='sm' icon="edit_note" flat label="Edit" stack no-caps @click="clickTab('/edit')" />
+          <q-btn size='sm' icon="settings" flat label="Settings" stack no-caps @click="clickTab('/settings')" />
         </div>
         <q-btn size='sm' icon="logout" flat label="Logout" stack no-caps @click="logoutAction" />
       </div>

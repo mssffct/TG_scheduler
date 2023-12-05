@@ -21,6 +21,13 @@ const routes: RouteRecordRawApp[] = [
       { name: 'EditPage', path: '', component: () => import('pages/EditPage.vue') }
     ]
   },
+  {
+    path: '/settings',
+    component: () => import('layouts/MainLayout.vue'),
+    children: [
+      { name: 'SettingsPage', path: '', component: () => import('pages/settings/SettingsPage.vue') }
+    ]
+  },
   // Always leave this as last one,
   {
     path: '/:catchAll(.*)*',
