@@ -46,11 +46,9 @@ class MemosViewSet(ModelViewSet):
     def update_memo(self, request: Request) -> SuccessResponse | ErrorResponse:
         data = request.data
         memo_id = data.pop('id')
-        print(data)
         try:
             with transaction.atomic():
                 Memo.objects.filter(id=memo_id).update(**data)
-                return SuccessResponse('Updates successfully')
-        except Exception as ex:
-            print(ex)
+                return SuccessResponse('Updated successfully')
+        except Exception:
             return ErrorResponse(description='Failed to update memo')
