@@ -8,17 +8,20 @@ from django.db.models import QuerySet
 from .serializers import MemosSerializer
 from .models import Memo
 from backend.responses import *
+from backend.mixins import MixedPermissionModelViewSet
+from backend.permissions import IsCreator
 
 
-class MemosViewSet(ModelViewSet):
-    permission_classes = (IsAuthenticated,)
+class MemosViewSet(MixedPermissionModelViewSet):
     serializer_class = MemosSerializer
+    permission_classes_by_action = {
+        ('list', 'create', 'partial_update', 'destroy'): [IsCreator, ]
+    }
 
     def get_queryset(self) -> QuerySet:
         return Memo.objects.filter(creator=self.request.app_user).all()
 
-    @action(methods=['post'], detail=False)
-    def create_memo(self, request: Request) -> SuccessResponse | ErrorResponse:
+    def create(self, request: Request, *args, **kwargs) -> SuccessResponse | ErrorResponse:
         data = request.data
         try:
             with transaction.atomic():
@@ -31,8 +34,11 @@ class MemosViewSet(ModelViewSet):
             print(ex)
             return ErrorResponse(description='Failed to save memo')
 
-    @action(methods=['delete'], detail=False)
-    def delete_memo(self, request: Request) -> SuccessResponse | ErrorResponse:
+    def retrieve(self, request, *args, **kwargs):
+        #TODO Memo get function
+        pass
+
+    def destroy(self, request: Request, *args, **kwargs) -> SuccessResponse | ErrorResponse:
         data = request.data
         try:
             with transaction.atomic():
@@ -42,8 +48,7 @@ class MemosViewSet(ModelViewSet):
             print(ex)
             return ErrorResponse(description='Failed to delete memo')
 
-    @action(methods=['put'], detail=False)
-    def update_memo(self, request: Request) -> SuccessResponse | ErrorResponse:
+    def partial_update(self, request: Request, *args, **kwargs) -> SuccessResponse | ErrorResponse:
         data = request.data
         memo_id = data.pop('id')
         try:
