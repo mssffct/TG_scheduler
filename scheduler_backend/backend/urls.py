@@ -10,7 +10,7 @@ from rest_framework import permissions
 # Swagger
 schema_view = get_schema_view(
     openapi.Info(
-        title="Snippets API",
+        title="TG Scheduler API",
         default_version='v1',
     ),
     public=True,

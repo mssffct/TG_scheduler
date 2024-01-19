@@ -32,7 +32,7 @@ class UserViewSet(ModelViewSet):
 
     @action(methods=['post'], detail=False, permission_classes=(AllowAny,))
     def register(self, request: Request) -> ErrorResponse | SuccessResponse:
-        data = request.data.dict()
+        data = request.data
         username, pass1, pass2 = data.get('username'), data.get('password'), data.pop('password2')
         if User.objects.filter(username=username).exists():
             return ErrorResponse(description='Please, choose another username')
