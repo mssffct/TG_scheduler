@@ -3,7 +3,7 @@ import request from 'src/utils/request'
 
 export const CreateRequest = async (data: object) => {
     return request({
-        url: '/memos/create_memo',
+        url: '/memos/',
         method: 'post',
         data
     })
@@ -11,23 +11,29 @@ export const CreateRequest = async (data: object) => {
 
 export const FetchRequest = async () => {
     return request({
-        url: '/memos',
+        url: '/memos/',
         method: 'get'
     })
 }
 
-export const DeleteRequest = async (data: object) => {
+export const RetrieveRequest = async (memoId: string) => {
     return request({
-        url: '/memos/delete_memo',
-        method: 'delete',
-        data
+        url: '/memos/${memoId}/',
+        method: 'get'
     })
 }
 
-export const UpdateRequest = async (data: object) => {
+export const DeleteRequest = async (memoId: string) => {
     return request({
-        url: '/memos/update_memo',
-        method: 'put',
+        url: '/memos/${memoId}/',
+        method: 'delete'
+    })
+}
+
+export const UpdateRequest = async (memoId: string, data: object) => {
+    return request({
+        url: '/memos/${memoId}/',
+        method: 'patch',
         data
     })
 }

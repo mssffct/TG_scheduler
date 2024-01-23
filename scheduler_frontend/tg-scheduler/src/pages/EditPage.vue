@@ -150,7 +150,7 @@ const errorNotify = (message: string) => {
 }
 
 const deleteMemo = async (memo_id: number) => {
-  DeleteRequest({ id: memo_id }).then(async (response: string) => {
+  DeleteRequest(memo_id).then(async (response: string) => {
     successAndReload(response)
   }).catch(error => {
     errorNotify(error)
@@ -162,7 +162,7 @@ const updateMemoStart = (memo: Memo) => {
 }
 
 const updateMemo = async (memo: Memo) => {
-  UpdateRequest(memo).then(async (response: string) => {
+  UpdateRequest(memo.id, memo).then(async (response: string) => {
     successAndReload(response)
   }).catch(error => {
     errorNotify(error)
