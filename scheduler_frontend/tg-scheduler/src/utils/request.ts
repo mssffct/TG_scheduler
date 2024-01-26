@@ -24,7 +24,7 @@ interface AppAxiosInstance {
 // InternalAxiosRequestConfig
 interface RequestConfig extends Omit<InternalAxiosRequestConfig, 'headers'> {
     url: string;
-    method: 'get' | 'post' | 'put' | 'delete';
+    method: 'get' | 'post' | 'put' | 'delete' | 'patch';
     headers?: object,
     withoutError?: Boolean,  // don't show error
     fullResponse?: Boolean,  // return response (default - response.data)

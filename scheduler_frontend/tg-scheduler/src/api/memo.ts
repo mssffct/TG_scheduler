@@ -18,21 +18,21 @@ export const FetchRequest = async () => {
 
 export const RetrieveRequest = async (memoId: string) => {
     return request({
-        url: '/memos/${memoId}/',
+        url: `/memos/${memoId}/`,
         method: 'get'
     })
 }
 
 export const DeleteRequest = async (memoId: string) => {
     return request({
-        url: '/memos/${memoId}/',
+        url: `/memos/${memoId}/`,
         method: 'delete'
     })
 }
 
 export const UpdateRequest = async (memoId: string, data: object) => {
     return request({
-        url: '/memos/${memoId}/',
+        url: `/memos/${memoId}/`,
         method: 'patch',
         data
     })
