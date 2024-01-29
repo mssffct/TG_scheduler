@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from drf_yasg.views import get_schema_view
 from drf_yasg import openapi
 from rest_framework import permissions, routers
-from users.views import UserSettingsViewSet, TokenCreate, TokenDestroy
+from users.views import UserSettingsViewSet, UserViewSet, TokenCreate, TokenDestroy
 from memos.views import MemosViewSet
 
 # Swagger
@@ -24,15 +24,14 @@ router = routers.DefaultRouter()
 router.register(r'memos', MemosViewSet, basename='memos')
 # Settings
 router.register(r'settings', UserSettingsViewSet, basename='settings')
-# Auth
+# Users
+router.register(r'users', UserViewSet, basename='users')
 
 urlpatterns = [
     path('scheduler_admin/', admin.site.urls),
-    path('api/auth/token/login/', TokenCreate.as_view()),
-    path('api/auth/token/logout/', TokenDestroy.as_view()),
-    path('api/auth/', include('users.urls')),
+    path('api/auth/login/', TokenCreate.as_view()),
+    path('api/auth/logout/', TokenDestroy.as_view()),
     path('api/', include(router.urls)),
-    #TODO another urls
     # Swagger
     path('swagger/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
 ]

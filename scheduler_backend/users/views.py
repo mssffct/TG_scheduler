@@ -6,12 +6,13 @@ from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
 from rest_framework.request import Request
 
-from .serializers import UserSerializer
+from .serializers import UserSerializer, UserSettingsSerializer
 from .models import *
 from backend.responses import *
+from backend.mixins import SwaggerIgnoreBasicMethodsViewSet
 
 
-class UserViewSet(ModelViewSet):
+class UserViewSet(SwaggerIgnoreBasicMethodsViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
@@ -22,13 +23,6 @@ class UserViewSet(ModelViewSet):
             return ErrorResponse(status=403)
         data = self.serializer_class(user).data
         return SuccessResponse(data)
-
-    @action(methods=['post'], detail=False)
-    def check_password(self, request: Request, *args, **kwargs) -> ErrorResponse | SuccessResponse:
-        user: User = request.user
-        pwd = request.data['pwd']
-
-        return SuccessResponse(user.check_password(pwd))
 
     @action(methods=['post'], detail=False, permission_classes=(AllowAny,))
     def register(self, request: Request) -> ErrorResponse | SuccessResponse:
@@ -68,8 +62,9 @@ class TokenDestroy(ObtainAuthToken):
         return SuccessResponse()
 
 
-class UserSettingsViewSet(ModelViewSet):
+class UserSettingsViewSet(SwaggerIgnoreBasicMethodsViewSet):
     permission_classes = (IsAuthenticated,)
+    serializer_class = UserSettingsSerializer
 
     @action(methods=['get'], detail=False)
     def telegram_id(self, request: Request) -> SuccessResponse:
