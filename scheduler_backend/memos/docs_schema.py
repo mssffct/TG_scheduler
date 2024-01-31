@@ -1,9 +1,8 @@
-from drf_yasg import openapi
+from drf_yasg.openapi import Schema, TYPE_OBJECT, TYPE_STRING
 
-
-memo_schema = openapi.Schema(type=openapi.TYPE_OBJECT, properties={
-	'importance': openapi.Schema(type=openapi.TYPE_STRING, description='memo importance level (high, middle, low)'),
-	'theme': openapi.Schema(type=openapi.TYPE_STRING, description='memo theme'),
-	'description': openapi.Schema(type=openapi.TYPE_STRING, description='memo description'),
-	'time_to_send': openapi.Schema(type=openapi.TYPE_STRING, description='time_to_send'),
+memo_schema = Schema(type=TYPE_OBJECT, properties={
+	'importance': Schema(type=TYPE_STRING, description='memo importance level (high, middle, low)'),
+	'theme': Schema(type=TYPE_STRING, description='memo theme'),
+	'description': Schema(type=TYPE_STRING, description='memo description'),
+	'time_to_send': Schema(type=TYPE_STRING, description='time_to_send'),
 })
