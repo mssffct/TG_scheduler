@@ -12,7 +12,7 @@ class Memo(models.Model):
         SENT = 'sent'
         NOT_SENT = 'not_sent'
 
-    creator = models.ForeignKey(User, verbose_name='creator', on_delete=models.CASCADE)
+    creator = models.ForeignKey(User, verbose_name='creator', on_delete=models.CASCADE, related_name='memos')
     status = models.CharField(
         max_length=50, choices=MemoStatus.choices, verbose_name='memo status', default=MemoStatus.NOT_SENT
     )
