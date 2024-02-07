@@ -24,8 +24,8 @@ class MemosViewSet(ModelViewSet):
         return Memo.objects.filter(creator=self.request.app_user).all()
 
     @swagger_auto_schema(request_body=memo_schema, responses={
-        200: openapi.Response("Success Memo create", schema=success_response),
-        503: openapi.Response("Failed to create Memo", schema=success_response)
+        200: openapi.Response("Success Memo create", schema=get_success_response('Saved successfully')),
+        503: openapi.Response("Failed to create Memo", schema=get_error_response('Failed to save memo'))
     })
     def create(self, request: Request, *args, **kwargs) -> SuccessResponse | ErrorResponse:
         """Create Memo"""
