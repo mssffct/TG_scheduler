@@ -1,6 +1,7 @@
 from django.db import transaction
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.openapi import Response as oResponse
 from rest_framework.decorators import action
-from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.authtoken.models import Token
@@ -8,7 +9,9 @@ from rest_framework.request import Request
 
 from .serializers import UserSerializer, UserSettingsSerializer
 from .models import *
+from .docs_schema import *
 from backend.responses import *
+from backend.docs_schema import *
 from backend.mixins import SwaggerIgnoreBasicMethodsViewSet
 
 
@@ -16,6 +19,10 @@ class UserViewSet(SwaggerIgnoreBasicMethodsViewSet):
     permission_classes = (IsAuthenticated,)
     serializer_class = UserSerializer
 
+    @swagger_auto_schema(responses={
+        200: oResponse('Success', schema=user_info_schema),
+        503: oResponse('Error', schema=get_error_response('Unauthorized'))
+    })
     @action(methods=['get'], detail=False, permission_classes=(IsAuthenticated,))
     def info(self, request: Request) -> ErrorResponse | SuccessResponse:
         user = request.user
