@@ -1,8 +1,8 @@
 from django.test import TestCase, Client
 from django.utils import timezone
-from django.contrib.auth.models import User
 
-from tests.factories import UserFactory, NotSentMemoFactory, SentMemoFactory
+from memos.tests.factories import NotSentMemoFactory, SentMemoFactory
+from users.tests.factories import UserFactory
 
 
 class MemoTestCase(TestCase):

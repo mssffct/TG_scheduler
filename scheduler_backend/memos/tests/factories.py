@@ -1,18 +1,11 @@
 import random
 
 from django.utils import timezone
-from factory import Faker
 from factory.django import DjangoModelFactory
+from factory import Faker
+
 
 from memos.models import *
-from users.models import *
-
-
-class UserFactory(DjangoModelFactory):
-    username = Faker('first_name')
-
-    class Meta:
-        model = User
 
 
 class SentMemoFactory(DjangoModelFactory):
